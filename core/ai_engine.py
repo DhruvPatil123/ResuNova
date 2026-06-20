@@ -2,6 +2,7 @@ import os
 from openai import OpenAI
 import streamlit as st
 from typing import List, Optional
+from data.schema import Experience
 from functools import lru_cache
 
 class AIEngine:
@@ -35,8 +36,8 @@ class AIEngine:
             return f"Error: {str(e)}"
 
     def quantify_bullet(self, bullet: str) -> str:
-        \"\"\"Transforms a duty into a quantified achievement.\"\"\"
-        prompt = f\"\"\"
+        """Transforms a duty into a quantified achievement."""
+        prompt = f"""
         Transform the following resume bullet point into a high-impact, quantified achievement.
 
         Guidelines:
@@ -46,12 +47,12 @@ class AIEngine:
         - Return ONLY the rewritten bullet point.
 
         Bullet: {bullet}
-        \"\"\"
+        """
         return self._generate_response(prompt)
 
     def polish_wording(self, text: str, tone: str = "Confident") -> str:
-        \"\"\"Rewrites text for better recruiter appeal based on tone.\"\"\"
-        prompt = f\"\"\"
+        """Rewrites text for better recruiter appeal based on tone."""
+        prompt = f"""
         Rewrite the following professional summary or experience section to be more recruiter-friendly.
         Tone: {tone}
 
@@ -62,19 +63,19 @@ class AIEngine:
         - Return the polished version.
 
         Text: {text}
-        \"\"\"
+        """
         return self._generate_response(prompt)
 
     def rewrite_experience_for_jd(self, experience_list: List[Experience], job_description: str, tone: str = "Confident") -> List[Experience]:
-        \"\"\"Rewrites the entire experience list to align with a specific job description.\"\"\"
+        """Rewrites the entire experience list to align with a specific job description."""
         if not self.is_ready():
             return experience_list
 
         current_resumes_text = ""
         for exp in experience_list:
-            current_resumes_text += f"Role: {exp.role}, Company: {exp.company}\\nBullets: {\\n}.join(exp.description)}\\n\\n"
+            current_resumes_text += f"Role: {exp.role}, Company: {exp.company}\nBullets: {'\n'.join(exp.description)}\n\n"
 
-        prompt = f\"\"\"
+        prompt = f"""
         You are an expert resume writer. Rewrite the following professional experience to align perfectly with the provided Job Description.
 
         Job Description: {job_description}
@@ -90,7 +91,7 @@ class AIEngine:
         - Format the response as a JSON array of objects with keys: 'role', 'company', 'location', 'start_date', 'end_date', 'description' (as an array of strings).
 
         Return ONLY valid JSON.
-        \"\"\"
+        """
 
         response = self._generate_response(prompt, model="gpt-4o")
         try:

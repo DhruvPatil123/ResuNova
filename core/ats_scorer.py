@@ -7,9 +7,9 @@ class ATSScorer:
         self.required_sections = ["Experience", "Education", "Skills", "Summary"]
 
     def analyze(self, resume_data, job_description: str) -> Dict:
-        \"\"\"
+        """
         Analyzes the resume against a job description and returns a score and suggestions.
-        \"\"\"
+        """
         score = 0
         suggestions = []
 
@@ -80,7 +80,7 @@ class ATSScorer:
         }
 
     def _extract_keywords(self, text: str) -> List[str]:
-        \"\"\"Very basic keyword extraction (can be improved with spaCy/NLTK)\"\"\"
+        """Very basic keyword extraction (can be improved with spaCy/NLTK)"""
         # Simple approach: Split by comma/space and filter common words
         # In a real app, this would be a list of industry-standard skills
         words = re.findall(r'\b\w{3,}\b', text.lower())

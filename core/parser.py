@@ -5,11 +5,11 @@ from data.schema import ResumeData, Experience, Education
 class ResumeParser:
     @staticmethod
     def parse_pdf(file_stream) -> dict:
-        \"\"\"
+        """
         Very basic PDF to text conversion.
         In a production app, this would use more advanced NLP (like spaCy)
         to map extracted text to the ResumeData schema.
-        \"\"\"
+        """
         reader = PyPDF2.PdfReader(file_stream)
         text = ""
         for page in reader.pages:
@@ -25,7 +25,7 @@ class ResumeParser:
 
     @staticmethod
     def parse_json(json_data) -> ResumeData:
-        \"\"\"Parses a JSON string into a ResumeData object.\"\"\"
+        """Parses a JSON string into a ResumeData object."""
         try:
             data = json.loads(json_data)
             return ResumeData(**data)
